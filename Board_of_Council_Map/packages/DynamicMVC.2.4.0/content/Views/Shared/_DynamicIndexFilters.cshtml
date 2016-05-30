@@ -1,0 +1,57 @@
+﻿@model DynamicMVC.UI.ViewModels.DynamicIndexViewModel
+
+@{
+    var filterPropertyViewModels = Model.GetFilterPropertyViewModels();
+    var showSearch = filterPropertyViewModels.Any();
+}
+<div class="row hidden-xs" style="padding-top: 10px; padding-bottom: 10px;">
+    @if (showSearch)
+    {
+        using (Html.BeginForm("IndexSearch", Model.DynamicEntityMetadata.EntityMetadata.TypeName, FormMethod.Post, new {@class = "form-inline", role = "form"}))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(false)
+            foreach (var p in Model.GetFilterPropertyViewModels())
+            {
+                //show filters
+                @Html.Partial(p.DynamicEditorName, p.ViewDataDictionary["FilterModel"])
+            }
+
+            @Html.Hidden("Page", Model.RouteValueDictionary["Page"].ToString())
+            @Html.Hidden("PageSize", Model.RouteValueDictionary["PageSize"].ToString())
+            @Html.Hidden("OrderBy", Model.RouteValueDictionary["OrderBy"].ToString())
+            <div class="form-group">
+                <button type="submit" class="btn">Search</button>
+            </div>
+        }
+    }
+</div>
+@if (showSearch)
+{
+    <div class="panel panel-primary visible-xs" style="margin-top: 10px; margin-bottom: 0px;">
+        <div class="panel-heading">
+            <h3 class="panel-title">Filter</h3>
+            <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+        </div>
+        <div class="panel-body">
+            @using (Html.BeginForm("IndexSearch", Model.DynamicEntityMetadata.EntityMetadata.TypeName, FormMethod.Post, new {@class = "form-inline", role = "form"}))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(false)
+
+                foreach (var p in Model.GetFilterPropertyViewModels())
+                {
+                    //show filters
+                    @Html.Partial(p.DynamicEditorName, p.ViewDataDictionary["FilterModel"])
+                }
+
+                @Html.Hidden("Page", Model.RouteValueDictionary["Page"].ToString())
+                @Html.Hidden("PageSize", Model.RouteValueDictionary["PageSize"].ToString())
+                @Html.Hidden("OrderBy", Model.RouteValueDictionary["OrderBy"].ToString())
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            }
+        </div>
+    </div>
+}

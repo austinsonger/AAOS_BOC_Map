@@ -1,0 +1,22 @@
+﻿@model DynamicMVC.UI.ViewModels.DynamicIndexItemViewModel
+
+<tr>
+    @if (Model.DynamicIndexViewModel.ShowDelete())
+    {
+        <td>@Html.ActionLink("Delete", "Delete", Model.DynamicIndexViewModel.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary(), null)</td>
+    }
+    @if (Model.DynamicIndexViewModel.ShowEdit())
+    {
+        <td>@Html.ActionLink("Edit", "Edit", Model.DynamicIndexViewModel.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary(), null)</td>
+    }
+    @if (Model.DynamicIndexViewModel.ShowDetails())
+    {
+        <td>@Html.ActionLink("Details", "Details", Model.DynamicIndexViewModel.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary(), null)</td>
+    }
+    @foreach (var dynamicProperty in Model.GetDynamicPropertyViewModels())
+    {
+        <td>
+            @Html.Partial(dynamicProperty.PartialViewName, (object)Model.Item, dynamicProperty.ViewDataDictionary)
+        </td>
+    }
+</tr>

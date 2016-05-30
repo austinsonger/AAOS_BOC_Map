@@ -1,0 +1,70 @@
+﻿@using DynamicMVC.UI.Extensions
+@using DynamicMVC.UI.Helpers
+
+@model DynamicMVC.UI.ViewModels.DynamicIndexViewModel
+
+@{
+    var defaultpropertyName = Model.DynamicEntityMetadata.GetDefaultPropertyName();
+    var defaultDynamicProperty = Model.GetDynamicPropertyViewModels().SingleOrDefault(x => x.DynamicPropertyMetadata.EntityPropertyMetadata.PropertyName == defaultpropertyName);
+}
+
+<div class="row">
+    <div class="col-xs-6">
+        @if (Model.ShowCreate())
+        {
+            @Html.ActionLink("Create New", "Create", @Model.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary, null)
+        }
+    </div>
+    <div class="col-xs-6 visible-xs">
+        @if (defaultDynamicProperty!=null && defaultDynamicProperty.AllowSort())
+        {
+            <div style="float: right;">
+                @Ajax.DisplaySortName("(order by " + defaultpropertyName + ")", "Index", "_Index", Model.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary, new AjaxOptions() { UpdateTargetId = "ajaxtable" }, defaultDynamicProperty.GetSortExpression())
+            </div>
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="table-responsive hidden-xs">
+        <table class="table table-striped table-bordered table-condensed">
+            <tr>
+                @Html.Partial("_DynamicIndexHeader", Model)
+            </tr>
+            @foreach (var item in Model.DynamicIndexItemViewModels)
+            {
+                @Html.Partial("_DynamicIndexItem", item)
+            }
+            <tr>
+                <td colspan="100">
+                    <span id="DesktopPagingMessage">@Model.PagingMessage()</span>
+                </td>
+            </tr>
+        </table>
+        <ul class="pager">
+            <li id="desktopPrevious" class="@Model.PreviousClassName">
+                @Ajax.ActionLink("Previous", "Index", Model.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary.CloneAndAddPage(-1)
+                    , new AjaxOptions {UpdateTargetId = "ajaxtable", Url = Url.Action("_Index", Model.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary.CloneAndAddPage(-1))}
+                    , new { @id="desktopPreviousLink"})
+            </li>
+            <li id="desktopNext" class="@Model.NextClassName">
+                @Ajax.ActionLink("Next", "Index", Model.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary.CloneAndAddPage(1)
+                    , new AjaxOptions {UpdateTargetId = "ajaxtable", Url = Url.Action("_Index", Model.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary.CloneAndAddPage(1))}
+                    ,new { @id="desktopNextLink"})
+            </li>
+        </ul>
+    </div>
+
+    <div class="panel-group col-sm-12 visible-xs">
+        @foreach (var item in Model.DynamicIndexItemViewModels)
+        {
+            @Html.Partial("_DynamicIndexMobileItem", item)
+        }
+    </div>
+</div>
+
+<script>
+    $(document).ready(
+        UpdateMobileIndexView
+    );
+</script>

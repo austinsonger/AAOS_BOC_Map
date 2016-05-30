@@ -1,0 +1,46 @@
+﻿@model object
+
+@using DynamicMVC.UI.Filters
+@using DynamicMVC.UI.ViewModels
+@{
+    DynamicEditorViewBag dynamicViewBag = ViewBag.DynamicEditorViewBag;
+    var customViewDataDictionary = (ViewDataDictionary)ViewData["CustomViewDataDictionary"];
+    var propertyName = customViewDataDictionary["PropertyName"].ToString();
+    var dynamicEditorDropDownViewModel = (DynamicEditorDropDownViewModel)customViewDataDictionary["DynamicEditorDropDownViewModel"];
+    if (customViewDataDictionary.ContainsKey("DisplayName") && ViewData.ModelMetadata.DisplayName == null)
+    {
+        ViewData.ModelMetadata.DisplayName = customViewDataDictionary["DisplayName"].ToString();
+    }
+
+    List<SelectListItem> selectList = null;
+    string selectedValue = Model != null ? Model.ToString() : "";
+    string selectedText = "";
+    var useAutoComplete = dynamicViewBag.GetItemsCount(dynamicEditorDropDownViewModel.Type) > 50;
+    if (useAutoComplete)
+    {
+        if (!string.IsNullOrEmpty(selectedValue))
+        {
+            selectedText = dynamicViewBag.GetSelectItemText(dynamicEditorDropDownViewModel.Type, selectedValue, dynamicEditorDropDownViewModel.DataTextField);
+        }
+    }
+    else
+    {
+        selectList = dynamicViewBag.GetSelectListItems(dynamicEditorDropDownViewModel.Type, dynamicEditorDropDownViewModel.DataValueField, dynamicEditorDropDownViewModel.DataTextField, selectedValue);
+    }
+}
+<div class="form-group">
+    @Html.LabelFor(m => m)
+    <div class="">
+        @if (useAutoComplete)
+        {
+            @Html.TextBoxFor(m => m, new { @class = "autocomplete", @style = "width : 280px;", data_url = @Url.Action("AutoComplete", dynamicEditorDropDownViewModel.Type.Name), data_default = selectedText, data_id = propertyName })
+        }
+        else
+        {
+            @Html.DropDownListFor(m => m, selectList, new { @class = "form-control" })
+        }
+    </div>
+</div>
+
+
+

@@ -1,0 +1,48 @@
+﻿@using DynamicMVC.UI.Extensions
+@model DynamicMVC.UI.ViewModels.DynamicIndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .container {
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+</style>
+<div class="container">
+    <div class="row hidden-xs">
+        <h1>@Model.Header</h1>
+    </div>
+    <div id="MobileHeader" class="row visible-xs">
+        <div class="col-xs-3">
+            @Ajax.ActionLink("Previous", "Index", Model.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary.CloneAndAddPage(-1)
+                                      , new AjaxOptions { UpdateTargetId = "ajaxtable", Url = Url.Action("_Index", Model.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary.CloneAndAddPage(-1)) }
+                                      , new { @class = "btn btn-primary", @style = "margin-top: 20px;", @id="mobilePrevious" })
+        </div>
+        <div class="col-xs-6" style="text-align: center;">
+            <h3 style="margin-bottom: 0px;">@Model.Header</h3>
+            <h6 id="MobilePagingMessage" style="margin: 0px; font-size: 10px;"></h6>
+            <h6 style="margin: 0px; font-size: 8px;">@Model.GetFilterMessage()</h6>
+        </div>
+        <div class="col-xs-3" style="margin-top: 20px;">
+            @Ajax.ActionLink("Next", "Index", Model.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary.CloneAndAddPage(1)
+                                      , new AjaxOptions { UpdateTargetId = "ajaxtable", Url = Url.Action("_Index", Model.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary.CloneAndAddPage(1)) }
+                                      , new { @class = "btn btn-primary pull-right", @style = "vertical-align: bottom;", @id="mobileNext" })
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    @Html.Partial("_DynamicIndexFilters")
+    <div id="ajaxtable" style="margin-top: 10px;">
+        @* ReSharper disable once Mvc.ActionNotResolved *@
+        @Html.Action("_Index")
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

@@ -1,0 +1,10 @@
+﻿@using System.Web.DynamicData
+@using DynamicMVC.UI.ViewModels
+@{
+    var dynamicHyperlinkViewModel = (DynamicEditorHyperlinkViewModel)ViewData["DynamicEditorHyperlinkViewModel"];
+    var showHyperLink = dynamicHyperlinkViewModel != null;
+}
+@if (showHyperLink)
+{
+@Html.ActionLink(dynamicHyperlinkViewModel.DisplayName, dynamicHyperlinkViewModel.ActionName, dynamicHyperlinkViewModel.ControllerName, dynamicHyperlinkViewModel.RouteValueDictionary, null)
+}

@@ -1,0 +1,9 @@
+﻿@model DynamicMVC.UI.ViewModels.DynamicFilterDateTimeViewModel
+
+<div class="form-group">
+    @Html.Label(Model.QueryStringName, Model.LabelText)
+    <div class="form-group">
+        @Html.TextBox(Model.QueryStringName, Model.FilterValue, new { @class = "datepicker form-control", @style = "width : 175px;" })
+        @Html.ValidationMessage(Model.QueryStringName)
+    </div>
+</div>

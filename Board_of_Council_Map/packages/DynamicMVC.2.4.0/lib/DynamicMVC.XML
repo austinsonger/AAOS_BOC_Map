@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DynamicMVC</name>
+    </assembly>
+    <members>
+        <member name="T:DynamicMVC.Business.Models.ApplicationMetadata">
+            <summary>
+            Holds information passed in from client application needed by DynamicMVC
+            </summary>
+        </member>
+        <member name="M:DynamicMVC.Business.Models.ApplicationMetadata.#ctor(System.Collections.Generic.IEnumerable{DynamicMVC.Business.Models.EntityMetadata},System.Collections.Generic.IEnumerable{System.Type},System.Func{DynamicMVC.Data.IDynamicRepository})">
+            <summary>
+            Extensibility constructor.  Allows passing in EntityMetadata directly.  This will bypass ApplicationEntity parsing and ApplicationEntityMetadata parsing.
+            </summary>
+            <param name="entityMetadatas"></param>
+            <param name="controllerTypes"></param>
+            <param name="getDynamicRepositoryFunction"></param>
+        </member>
+        <member name="M:DynamicMVC.Business.Models.ApplicationMetadata.#ctor(System.Reflection.Assembly,System.Reflection.Assembly,System.Reflection.Assembly,System.Func{DynamicMVC.Data.IDynamicRepository})">
+            <summary>
+            Constructor that can be used if model objects are inside mvc project
+            </summary>
+            <param name="assembly">MVC project assenbly</param>
+            <param name="getDynamicRepositoryFunction">Function used to create a new IDynamicRepository</param>
+        </member>
+        <member name="M:DynamicMVC.Business.Models.ApplicationMetadata.#ctor(System.Collections.Generic.IEnumerable{System.Type},System.Collections.Generic.IEnumerable{System.Type},System.Collections.Generic.IEnumerable{System.Type},System.Func{DynamicMVC.Data.IDynamicRepository})">
+            <summary>
+            
+            </summary>
+            <param name="applicationEntityMetadataTypes"></param>
+            <param name="getDynamicRepositoryFunction"></param>
+        </member>
+        <member name="P:DynamicMVC.Business.Models.ApplicationMetadata.Assembly">
+            <summary>
+            The assembly that holds the model objects
+            </summary>
+        </member>
+        <member name="P:DynamicMVC.Business.Models.ApplicationMetadata.GetDynamicRepositoryFunction">
+            <summary>
+            This function will be used to generate a new IDynamicRepository when needed
+            </summary>
+        </member>
+        <member name="T:DynamicMVC.Business.Models.DynamicPropertyMetadata">
+            <summary>
+            Holds Metadata for a DynamicEntity property after it has been parsed by dynamic mvc
+            </summary>
+        </member>
+        <member name="T:DynamicMVC.Business.Models.EntityMetadata">
+            <summary>
+            Holds Metadata for a DynamicEntity as it exists in the client application
+            </summary>
+        </member>
+        <member name="T:DynamicMVC.Business.Models.EntityPropertyMetadata">
+            <summary>
+            Holds Metadata for a DynamicEntity property as it exists in the client application
+            </summary>
+        </member>
+        <member name="P:DynamicMVC.Business.Attributes.DynamicFilterUIHintAttribute.DynamicFilterViewModelType">
+            <summary>
+            ViewModel that implements IDynamicFilter
+            </summary>
+        </member>
+        <member name="T:DynamicMVC.Business.Models.DynamicComplexEntityPropertyMetadata">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:DynamicMVC.Business.Models.DynamicEntityMetadata">
+            <summary>
+            Holds Metadata for a DynamicEntity after it has been parsed by dynamic mvc
+            </summary>
+        </member>
+        <member name="M:DynamicMVC.Business.Models.DynamicEntityMetadata.GetListIncludes">
+            <summary>
+            Returns all properties that are complex entity types by default.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DynamicMVC.Business.Models.DynamicEntityMetadata.LoadCreateIncludes(System.Object,DynamicMVC.Data.IDynamicRepository,System.String[])">
+            <summary>
+            This is called on the create to load related entities
+            </summary>
+            <param name="item"></param>
+            <param name="dynamicRepository"></param>
+            <param name="includes"></param>
+        </member>
+        <member name="T:DynamicMVC.Business.Models.DynamicForiegnKeyPropertyMetadata">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:DynamicMVC.Managers.DynamicMVCManager">
+            <summary>
+            Exposes methods called by the client application
+            </summary>
+        </member>
+        <member name="M:DynamicMVC.Managers.DynamicMVCManager.ParseApplicationMetadata(DynamicMVC.Business.Models.ApplicationMetadata)">
+            <summary>
+            Provides DynamicMVC with everything it needs to read from the client application
+            </summary>
+            <param name="applicationMetadataProvider"></param>
+        </member>
+        <member name="M:DynamicMVC.Managers.DynamicMVCManager.SetDynamicRoutes(System.Web.Routing.RouteCollection)">
+            <summary>
+            Sets routeCollection for models that do not have a controller defined
+            </summary>
+            <param CustomPropertyName="routeCollection"></param>
+            <param name="routeCollection">The route collection for the mvc application.</param>
+        </member>
+        <member name="M:DynamicMVC.Managers.DynamicMVCManager.GetNewDynamicRepository">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DynamicMVC.Managers.DynamicMVCManager.GetItemsCountFunction(System.Type)">
+            <summary>
+            
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DynamicMVC.Managers.DynamicMVCManager.GetItemByTypeFunction(System.Type,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="type"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DynamicMVC.Managers.DynamicMVCManager.GetItemsByTypeFunction(System.Type)">
+            <summary>
+            
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DynamicMVC.Managers.DynamicMVCManager.GetDynamicMenuItems">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DynamicMVC.Managers.DynamicMVCManager.GetDynamicEntityMetadata(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="typeName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DynamicMVC.UI.ControllerManager">
+            <summary>
+            ControllerManager holds pointers to protected methods that need to be called on a particular controller.  This allows the DynamicControllerManager to call these methods.
+            </summary>
+        </member>
+        <member name="M:DynamicMVC.UI.RequestManager.#ctor(System.Web.HttpRequestBase)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="P:DynamicMVC.UI.ViewModels.DynamicPropertyViewModel.CustomPropertyName">
+            <summary>
+            Allows a custom property name depending on the view.
+            </summary>
+        </member>
+    </members>
+</doc>

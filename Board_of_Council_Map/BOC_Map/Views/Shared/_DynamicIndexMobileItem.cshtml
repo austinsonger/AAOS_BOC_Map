@@ -1,0 +1,56 @@
+﻿@using DynamicMVC.UI.Helpers
+
+@model DynamicMVC.UI.ViewModels.DynamicIndexItemViewModel
+
+@{
+    var defaultpropertyName = Model.DynamicEntityItemViewModel.DynamicEntityMetadata.GetDefaultPropertyName();
+    var defaultDynamicProperty = Model.GetDynamicPropertyViewModels().SingleOrDefault(x => x.DynamicPropertyMetadata.EntityPropertyMetadata.PropertyName == defaultpropertyName);
+    var entityName = Model.DynamicEntityItemViewModel.DynamicEntityMetadata.EntityMetadata.TypeName;
+}
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        @if (defaultDynamicProperty != null)
+        {
+            @Html.Partial(defaultDynamicProperty.PartialViewName, (object) Model.Item, defaultDynamicProperty.ViewDataDictionary)
+        }
+        else
+        {
+            @(entityName + " Details")
+        }
+    </div>
+    <div class="panel-body">
+        @foreach (var dynamicProperty in Model.GetDynamicPropertyViewModels().Where(x=>x.DynamicPropertyMetadata.EntityPropertyMetadata.PropertyName!=defaultpropertyName))
+        {
+            <div class="row">
+                <div class="col-xs-5">
+                    @if (dynamicProperty.AllowSort())
+                    {
+                        
+                        @Ajax.DisplaySortName(dynamicProperty.GetDisplayName(Html), "Index", "_Index", Model.DynamicEntityItemViewModel.DynamicEntityMetadata.EntityMetadata.TypeName, Model.DynamicIndexViewModel.RouteValueDictionary, new AjaxOptions() {UpdateTargetId = "ajaxtable"}, dynamicProperty.GetSortExpression())
+                    }
+                    else
+                    {
+                        @dynamicProperty.GetDisplayName(Html)
+                    }
+                </div>
+                <div class="col-xs-7">
+                    @Html.Partial(dynamicProperty.PartialViewName, (object)Model.Item, dynamicProperty.ViewDataDictionary)
+                </div>
+            </div>
+        }
+    </div>
+    <div class="panel-footer">
+        @if (Model.DynamicIndexViewModel.ShowEdit())
+        {
+        @Html.ActionLink("Edit", "Edit", Model.DynamicIndexViewModel.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary(), null)
+        }
+        @if (Model.DynamicIndexViewModel.ShowDetails())
+        {
+        @Html.ActionLink("Details", "Details", Model.DynamicIndexViewModel.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary(), null)
+        }
+        @if (Model.DynamicIndexViewModel.ShowDelete())
+        {
+        @Html.ActionLink("Delete", "Delete", Model.DynamicIndexViewModel.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary(), null)
+        }
+    </div>
+</div>

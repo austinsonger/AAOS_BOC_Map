@@ -1,0 +1,28 @@
+﻿@model object
+
+@using DynamicMVC.UI.ViewModels
+@{
+    var customViewDataDictionary = (ViewDataDictionary)ViewData["CustomViewDataDictionary"];
+    var dynamicHyperlinkViewModel = (DynamicEditorHyperlinkViewModel)customViewDataDictionary["DynamicEditorHyperlinkViewModel"];
+    var showHyperLink = dynamicHyperlinkViewModel != null;
+    if (customViewDataDictionary.ContainsKey("DisplayName") && ViewData.ModelMetadata.DisplayName == null)
+    {
+        ViewData.ModelMetadata.DisplayName = customViewDataDictionary["DisplayName"].ToString();
+    }
+}
+<div class="form-group">
+    @Html.LabelFor(m => m)
+    <div class="">
+        @if (showHyperLink)
+        {
+            @Html.ActionLink(dynamicHyperlinkViewModel.DisplayName, dynamicHyperlinkViewModel.ActionName, dynamicHyperlinkViewModel.ControllerName, dynamicHyperlinkViewModel.RouteValueDictionary, null)
+            @Html.ValidationMessageFor(m => m)
+        }
+    </div>
+</div>
+
+
+
+
+
+

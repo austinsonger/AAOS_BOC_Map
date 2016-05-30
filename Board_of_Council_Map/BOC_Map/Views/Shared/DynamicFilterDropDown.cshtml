@@ -1,0 +1,38 @@
+﻿@model DynamicMVC.UI.ViewModels.DynamicFilterDropDownViewModel
+
+@using DynamicMVC.UI.Filters
+@{
+    DynamicEditorViewBag dynamicViewBag = ViewBag.DynamicEditorViewBag;
+    List<SelectListItem> selectList = null;
+    string selectedText = "";
+    var useAutoComplete = dynamicViewBag.GetItemsCount(Model.Type) > 50;
+    if (useAutoComplete)
+    {
+        if (!string.IsNullOrEmpty(Model.SelectedValue))
+        {
+            selectedText = dynamicViewBag.GetSelectItemText(Model.Type, Model.SelectedValue, Model.DataTextField);
+        }
+    }
+    else
+    {
+        selectList = dynamicViewBag.GetSelectListItems(Model.Type, Model.DataValueField, Model.DataTextField, Model.SelectedValue, Model.NullText);
+    }
+}
+<div class="form-group">
+    @Html.Label(Model.PropertyName, Model.LabelText)
+    <div class="form-group">
+        @if (useAutoComplete)
+        {
+            @Html.TextBox(Model.PropertyName, Model.SelectedValue, new { @class = "autocomplete", @style = "width : 175px;", data_url = @Url.Action("AutoComplete", Model.Type.Name), data_default = selectedText, data_id = Model.PropertyName })
+        }
+        else
+        {
+            @Html.DropDownList(Model.PropertyName, selectList, new { @class = "form-control" })
+        }
+        @Html.ValidationMessage(Model.PropertyName)
+    </div>
+</div>
+
+
+
+

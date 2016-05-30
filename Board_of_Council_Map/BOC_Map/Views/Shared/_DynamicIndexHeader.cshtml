@@ -1,0 +1,33 @@
+﻿@using DynamicMVC.UI.Helpers
+@model DynamicMVC.UI.ViewModels.DynamicIndexViewModel
+
+@{
+    ViewData.ModelMetadata.DisplayName = "test";
+}
+@if (Model.ShowDelete())
+{
+    <th></th>
+}
+@if (Model.ShowEdit())
+{
+    <th></th>
+}
+@if (Model.ShowDetails())
+{
+    <th></th>
+}
+
+@foreach (var item in Model.GetDynamicPropertyViewModels())
+{
+    if (item.AllowSort())
+    {
+        <th>
+            @Ajax.DisplaySortName(item.GetDisplayName(Html), "Index", "_Index", Model.DynamicEntityMetadata.EntityMetadata.TypeName, Model.RouteValueDictionary, new AjaxOptions() { UpdateTargetId = "ajaxtable" }, item.GetSortExpression())
+        </th>
+    }
+    else
+    {
+        <th>@item.GetDisplayName(Html)</th>
+    }
+
+}
